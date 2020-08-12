@@ -12,10 +12,18 @@ const Button = ({text, handleClick}) => {
 const Statistic = ({text, value}) => {
   if (text === "positive")
     return(
-      <p>{text} {value}%</p>
+      // <p>{text} {value}%</p>
+      <tr>
+        <td>{text}</td>
+        <td>{value}%</td>
+      </tr>
     )
   return (
-    <p>{text} {value}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+    // <p>{text} {value}</p>
   )
 }
 
@@ -26,14 +34,16 @@ const Statistics = ({good,bad,neutral}) => {
   const setPostive = () => good / total * 100
   if (total !== 0)
     return (
-      <>
+      <table>
+      <tbody>
         <Statistic text = 'good' value = {good}/>
         <Statistic text='neutral' value={neutral} />
         <Statistic text='bad' value={bad} />
         <Statistic text='all' value={setAll()} />
         <Statistic text='average' value={setAverage()} />
         <Statistic text='positive' value={setPostive()} />
-      </>
+      </tbody>
+      </table>
     )
   return (
     <p>No feedback given </p>
