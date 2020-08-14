@@ -29,7 +29,7 @@ const App = (props) => {
     copy[selected] += 1
     setVotes(copy)
   }
-
+  
   const findMax = () => {
     if (max < votes[selected])
       max = votes[selected]
