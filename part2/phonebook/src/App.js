@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -13,11 +14,22 @@ const App = () => {
         { name: 'Dan Abramov', number: '12-43-234345' },
         { name: 'Mary Poppendieck', number: '39-23-6423122' }
     ])
-
-
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
+    const [names, setNames] = useState([])
+
+    const hook = () => {
+        console.log('effect',)
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                const names = response.data.map(person=> person.name)
+                setNames(names.concat(names))
+                console.log('names', names)} )
+    }
+    useEffect(hook,[])
+
 
     const handleInputChange = (event) => {
         const val = event.target.value
