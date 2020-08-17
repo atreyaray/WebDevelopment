@@ -1,13 +1,14 @@
 import React from 'react'
 
-const Number = ({ name, number }) => {
+const Number = ({ person , handleDeletion}) => {
+    const {name,number,id} = person
     return (
-        <li>{name} {number}</li>
+        <li>{name} {number}<button onClick={()=> handleDeletion(id)}>delete</button></li>
     )
 }
 
 
-const Persons = ({ newFilter, persons }) => {
+const Persons = ({ newFilter, persons, handleDeletion }) => {
     const personsToShow =
         (newFilter.length === 0)
             ? persons
@@ -16,10 +17,16 @@ const Persons = ({ newFilter, persons }) => {
     return(
         <div>
             <ul>
-                {console.log(newFilter, newFilter.length - 1)}
-                {console.log(persons.map(person => person.name.toLowerCase().slice(0, newFilter.length)))}
-                {personsToShow.map(person =>
-                    <Number key={person.name} name={person.name} number={person.number} />)}
+                {/* {console.log(newFilter, newFilter.length - 1)} */}
+                {/* {console.log(persons.map(person => person.name.toLowerCase().slice(0, newFilter.length)))} */}
+                {personsToShow.map(person =>{
+                    return(
+                        <>
+                        <Number key={person.name} person={person} handleDeletion={handleDeletion} />
+                        </>)
+                    })
+                }
+
             </ul>
         </div>
     )
