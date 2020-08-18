@@ -5,6 +5,26 @@ import Persons from './components/Persons'
 import noteService from './services/notes'
 
 
+const Notification = ({message,color}) => {
+    console.log('color', color)
+    var error = {
+        color: color,
+        background: 'lightgrey',
+        fontSize: 20,
+        borderStyle: 'solid',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    }
+    if (message === null) {
+        return null
+    }
+    return (
+        <div style={error}>
+            {message}
+        </div>
+    )
+}
 
 
 const App = () => {
@@ -25,6 +45,8 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newFilter, setNewFilter] = useState('')
+    const [errorMessage, setErrorMessage] = useState(null)
+    const [color, setColor] = useState('green')
     // const [names, setNames] = useState([])
 
     //hook to pull from the website 
@@ -76,28 +98,56 @@ const App = () => {
         const nameObject = { name : newName, number: newNumber}
         console.log(persons.includes( nameObject))
         const idx = persons.map(person=>person.name).includes(newName)
-        if (idx ){
-            window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
-            const existingPerson = persons.filter(p => p.name === newName)[0]
-            const newPersons = persons.filter(p => p.name !== newName)
-            const newPerson = {name:newName, number: newNumber, id: existingPerson.id}
-            console.log('existingPerson', existingPerson)
-            console.log('newPerson',newPerson)
+        if (idx){
             noteService
-                .update(existingPerson.id,newPerson)
-                .then(data => console.log('updated',data ))
-            setPersons(newPersons.concat([newPerson]))
+                .getOne(persons.filter(person=> person.name === newName)[0].id)
+                .then(data => {
+                    window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
+                    const existingPerson = persons.filter(p => p.name === newName)[0]
+                    const newPersons = persons.filter(p => p.name !== newName)
+                    const newPerson = { name: newName, number: newNumber, id: existingPerson.id }
+                    console.log('existingPerson', existingPerson)
+                    console.log('newPerson', newPerson)
+                    noteService
+                        .update(existingPerson.id, newPerson)
+                        .then(data => console.log('updated', data))
+                    setPersons(newPersons.concat([newPerson]))
+                    setColor('green')
+                    setErrorMessage(`Information of ${newName} updated`)
+                    setTimeout(() => setErrorMessage(null), 5000)
+                })
+                .catch(error => {
+                    setColor('red')
+                    setErrorMessage(`Information of ${newName} has already been removed from the server`)
+                    setTimeout(()=>setErrorMessage(null),5000)
+                })
+            // window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
+            // const existingPerson = persons.filter(p => p.name === newName)[0]
+            // const newPersons = persons.filter(p => p.name !== newName)
+            // const newPerson = {name:newName, number: newNumber, id: existingPerson.id}
+            // console.log('existingPerson', existingPerson)
+            // console.log('newPerson',newPerson)
+            // noteService
+            //     .update(existingPerson.id,newPerson)
+            //     .then(data => console.log('updated',data ))
+            // setPersons(newPersons.concat([newPerson]))
             setNewName('')
             setNewNumber('')
         }
         else{
+            console.log('creating',)
             noteService
                 .create(newName,newNumber)
                 .then( data =>{
                     console.log('data',data)
+                    setColor('green')
+                    setErrorMessage(`Added ${newName}`)
+                    console.log('error message',errorMessage)
                     setNewName('')
                     setNewNumber('')
                     setPersons(persons.concat([data]))
+                    setTimeout(() => setErrorMessage(null),5000)
+                    console.log('error message', errorMessage)
                 })
                 .catch(error => {console.log('fail',)
                 })
@@ -108,6 +158,7 @@ const App = () => {
         <div>
             {console.log('persons',persons)}
             <h2>Phonebook</h2>
+            <Notification message={errorMessage} color={color}/>
             <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
             
             <h3>add a new</h3>
