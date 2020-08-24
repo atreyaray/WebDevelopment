@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import noteService from './services/notes'
+import personService from './services/notes'
 
 
 const Notification = ({message,color}) => {
@@ -53,7 +53,7 @@ const App = () => {
     const hook = () => {
         console.log('effect',)
 
-        noteService
+        personService
             .getAll()
             .then(data => {
                 const newPersons = persons.concat([data])
@@ -85,7 +85,7 @@ const App = () => {
     const handleDeletion = (id) =>{
         if(window.confirm(`Delete ${persons.filter(p=>p.id === id)[0].name}?`)){
             console.log('deletion id',id)
-            noteService
+            personService
                 .remove(id)
             const newPersons = persons.filter(p => p.id !== id)
             setPersons(newPersons)
@@ -99,7 +99,7 @@ const App = () => {
         console.log(persons.includes( nameObject))
         const idx = persons.map(person=>person.name).includes(newName)
         if (idx){
-            noteService
+            personService
                 .getOne(persons.filter(person=> person.name === newName)[0].id)
                 .then(data => {
                     window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
@@ -108,7 +108,7 @@ const App = () => {
                     const newPerson = { name: newName, number: newNumber, id: existingPerson.id }
                     console.log('existingPerson', existingPerson)
                     console.log('newPerson', newPerson)
-                    noteService
+                    personService
                         .update(existingPerson.id, newPerson)
                         .then(data => console.log('updated', data))
                     setPersons(newPersons.concat([newPerson]))
@@ -121,23 +121,13 @@ const App = () => {
                     setErrorMessage(`Information of ${newName} has already been removed from the server`)
                     setTimeout(()=>setErrorMessage(null),5000)
                 })
-            // window.alert(`${newName} is already added to phonebook, replace the old number with a new one?`)
-            // const existingPerson = persons.filter(p => p.name === newName)[0]
-            // const newPersons = persons.filter(p => p.name !== newName)
-            // const newPerson = {name:newName, number: newNumber, id: existingPerson.id}
-            // console.log('existingPerson', existingPerson)
-            // console.log('newPerson',newPerson)
-            // noteService
-            //     .update(existingPerson.id,newPerson)
-            //     .then(data => console.log('updated',data ))
-            // setPersons(newPersons.concat([newPerson]))
             setNewName('')
             setNewNumber('')
         }
         else{
             console.log('creating',)
-            noteService
-                .create(newName,newNumber)
+            personService
+                .create(newName,newNumber, Math.floor,)
                 .then( data =>{
                     console.log('data',data)
                     setColor('green')
@@ -149,7 +139,14 @@ const App = () => {
                     setTimeout(() => setErrorMessage(null),5000)
                     console.log('error message', errorMessage)
                 })
-                .catch(error => {console.log('fail',)
+                .catch(error => {
+                    const error_note = error.response.data.error
+                    console.log('error caught',error_note)
+                    setColor('red')
+                    setErrorMessage(error_note)
+                    setTimeout(() => setErrorMessage(null), 5000)
+                    setNewName('')
+                    setNewNumber('')
                 })
         }
     }
@@ -160,8 +157,8 @@ const App = () => {
             <h2>Phonebook</h2>
             <Notification message={errorMessage} color={color}/>
             <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
-            
             <h3>add a new</h3>
+            {console.log('reaches h3')}
             <PersonForm 
                 handleSubmit = {handleSubmit}
                 newName = {newName}

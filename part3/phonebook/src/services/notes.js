@@ -1,8 +1,10 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const create = (name,number) => {
-    const request = axios.post(baseUrl,{name,number})
+    console.log('inside notes services',name,number)
+    const request = axios.post(baseUrl, {name,number}, { headers: { 'Content-Type': 'application/json'}})
+    console.log(request,)
     return request.then(response =>response.data)
 }
 

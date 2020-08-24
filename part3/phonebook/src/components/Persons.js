@@ -17,8 +17,6 @@ const Persons = ({ newFilter, persons, handleDeletion }) => {
     return(
         <div>
             <ul>
-                {/* {console.log(newFilter, newFilter.length - 1)} */}
-                {/* {console.log(persons.map(person => person.name.toLowerCase().slice(0, newFilter.length)))} */}
                 {personsToShow.map(person =>{
                     return(
                         <>
