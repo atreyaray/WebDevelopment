@@ -27,8 +27,36 @@ const favouriteBlog = (blogs) => {
         return {title:fav.title, author:fav.author, likes:fav.likes}
 }
 
+const mostBlogs = (blogs) => {
+    const authors = blogs.map(b => b.author)
+    let authorList = new Map()
+    for (var i = 0 ; i < authors.length ; i++ ){
+        let newAuthor = authors[i]
+        
+        if (!authorList.has(newAuthor)){
+            authorList.set(newAuthor,1)
+        }else{
+            const blogCount = authorList.get(newAuthor)
+            authorList.set(newAuthor, blogCount+1)
+        }
+    }
+    let max = 0
+    let bestAuthor = ''
+    for (let [key,value] of authorList ){
+        if (value > max){
+            max = value
+            bestAuthor = key
+        }
+    }
+    if (blogs.length === 0)
+        return null
+    else
+        return { author: bestAuthor, blogs: max}
+}
+
 module.exports = {
     dummy, 
     totalLikes,
-    favouriteBlog
+    favouriteBlog,
+    mostBlogs
 }

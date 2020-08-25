@@ -113,3 +113,25 @@ describe('favourite blogs', () => {
         expect(result).toEqual(correctResponse)
     })
 })
+
+describe('most blogs', () => {
+
+    test('of empty list is null', () => {
+        const result = listHelper.mostBlogs(blogs)
+        expect(result).toEqual(null)
+    })
+
+    test('when list has only one blog, the most blogs is by the same author', () => {
+        const result = listHelper.mostBlogs(listWithOneBlog)
+        expect(result).toEqual({author:listWithOneBlog[0].author, blogs:1})
+    })
+
+    test('determine the correct author for a bigger blog list', () => {
+        const correctResponse = {
+            author: "Robert C. Martin",
+            blogs: 3
+        }
+        result = listHelper.mostBlogs(blogsList)
+        expect(result).toEqual(correctResponse)
+    })  
+})
