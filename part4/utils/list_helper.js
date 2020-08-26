@@ -1,3 +1,5 @@
+const blog = require("../models/blog")
+
 const dummy = (blogs) => {
     return 1
 }
@@ -54,9 +56,33 @@ const mostBlogs = (blogs) => {
         return { author: bestAuthor, blogs: max}
 }
 
+const mostLikes = (blogs) => {
+    let authorList = new Map()
+    for (var i = 0 ; i < blogs.length ; i ++){
+        const newAuthor = blogs[i]
+        if (authorList.has(newAuthor.author)){
+            const likes = authorList.get(newAuthor.author)
+            authorList.set(newAuthor.author, likes+newAuthor.likes)
+        }else{
+            authorList.set(newAuthor.author,newAuthor.likes)
+        }
+    }
+    let max = -1
+    let likedAuthor = ''
+    for (var [key,value] of authorList){
+        if(value > max){
+            max = value
+            likedAuthor = key
+        }
+    }
+    if (blogs.length === 0)
+        return null
+    return {author:likedAuthor, likes: max}
+}
 module.exports = {
     dummy, 
     totalLikes,
     favouriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
