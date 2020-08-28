@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "First Blog Post",
-    "author": "Atreya Ray",
-    "url": "atreyaray.com",
-    "likes": 100
+    "title": "Second Blog Post",
+    "author": "Udayan Ray",
+    "url": "udayan68@gmail.com",
+    "likes": 102
 }
