@@ -27,14 +27,13 @@ blogRouter.get('/:id', async (request, response, next) => {
 
 blogRouter.post('/', async (request, response, next) => {
     const body = request.body
-
-    const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes
-    })
     try{
+        const blog = new Blog({
+            title: body.title,
+            author: body.author,
+            url: body.url,
+            likes: body.likes
+        })
         const savedBlog = await blog.save()
         response.json(savedBlog.toJSON())
     }catch(exception){

@@ -46,11 +46,38 @@ test('A valid blog is succesfully added', async () => {
              .expect(200)
              .expect('Content-Type',/application\/json/)
 
-    const blogsAtEnd = await helper.blogsInDb()    
-
-    expect(blogsAtEnd.length).toBe(helper.blogsList.length+1)                 
+    const blogsAtEnd = await helper.blogsInDb()                
     const contents = blogsAtEnd.map(blog => blog.title)
+
+    expect(blogsAtEnd.length).toBe(helper.blogsList.length + 1)     
     expect(contents).toContain('Third Blog')
+})
+
+test('If likes property is missing from the request, it defaults to 0', async () => {
+    const newBlog = {
+        title : 'Blog with no likes',
+        author : 'Mr not popular',
+        url : 'www.nolikes.com',
+    }
+    await api 
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type',/application\/json/)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(helper.blogsList.length+1)
+    expect(blogsAtEnd[blogsAtEnd.length-1].likes).toBe(0)
+})
+
+test('A test without title and url returns status code 400', async () => {
+    const newBlog = {
+        author : 'anonymous',
+        likes: 1000
+    }
+    await api  
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
 })
 
 afterAll(() => {
