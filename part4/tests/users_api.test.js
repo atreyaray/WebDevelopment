@@ -38,6 +38,26 @@ describe('when there is initially one user at db', () => {
         expect(usernames).toContain(newUser.username)
     })
 })
+
+describe('Invalid users are not created', () => {
+    test('Invalid user without name or username is not created', async () => {
+        const newUser = {
+            username: '',
+            name: 'Matti Luukkainen',
+            password: '',
+        }
+        const initialBlogs = await helper.usersInDb()
+        const res = await api
+                .post('/api/users')
+                .send(newUser)
+                .expect(400)
+        expect(res.body).toStrictEqual({"error" : 'Invalid username or password'})
+        const currentBlogs = await helper.usersInDb()
+        expect(currentBlogs.length).toBe(initialBlogs.length)
+                
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
