@@ -3,6 +3,11 @@ const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { request } = require('express')
+const mongoose = require('mongoose')
+
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true);
+
 
 blogRouter.get('/', async (request, response, next) => {
     try {
@@ -54,8 +59,16 @@ blogRouter.post('/', async (request, response, next) => {
 blogRouter.delete('/:id', async (request, response, next) => {
     const id = request.params.id
     try{
-        await Blog.findByIdAndRemove(id)
-        response.status(204).end()
+        const decodedToken = jwt.verify(request.token, process.env.SECRET)
+        const blog = await Blog.findById(request.params.id)
+        if (!request.token || !decodedToken.id ) {
+            response.status(401).json({ error: 'token invalid or missing' })
+        }
+        if ((blog.user.toString() === decodedToken.id.toString())){
+            await Blog.findByIdAndRemove(id)
+            response.status(204).end()
+        }
+        response.status(401).json({ error: 'wrong user' })
     }catch(exception){
         next(exception)
     }
