@@ -4,8 +4,6 @@ const app = require('../app')
 const helper = require('./test_helper')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const blog = require('../models/blog')
-const middeware = require('../utils/middleware')
 const { json } = require('express')
 
 mongoose.set('useFindAndModify', false);
