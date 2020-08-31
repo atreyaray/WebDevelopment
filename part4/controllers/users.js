@@ -29,13 +29,17 @@ usersRouter.post('/', async (request, response, next) => {
 
 })
 
-usersRouter.get('/', async (request, response) => {
-    const users = User.find({})
-    console.log('users',users)
-    if (users)
-        response.json(users.map(u => u.toJSON()))
-    else 
-        response.json({})
+usersRouter.get('/', async (request, response, next) => {
+    try {
+        const users = await User.find({}).populate('blogs', {url:1,author:1,id:1,title:1})
+        console.log('users', users.map(u => u.name))
+        if (users)
+            response.json(users.map(u => u.toJSON()))
+        else
+            response.json({})   
+    } catch (exception) {
+       next(exception) 
+    }
 })
 
 module.exports = usersRouter

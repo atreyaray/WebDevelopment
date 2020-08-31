@@ -2,6 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "author": "Udayan Ray",
-    "likes": 102
+    "title" : "Economics",
+    "author": "Udayan",
+    "url" : "www.therealray.com",
+    "likes": 30
 }
