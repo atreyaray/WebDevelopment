@@ -16,10 +16,10 @@ const userSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref : 'Note'
-        },
-    ]
+        }
+    ],
 })
-
+userSchema.plugin(uniqueValidator)
 userSchema.set('toJSON',{
     transform : (document, returnedObject) => {
      returnedObject.id = returnedObject._id
