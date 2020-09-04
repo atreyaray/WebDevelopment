@@ -15,6 +15,11 @@ const App = () => {
     author : "",
     url : ""
   })
+  const [errorMessage, setErrorMessage] = useState({
+    visible : false,
+    message : "",
+    color : ""
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,6 +35,16 @@ const App = () => {
       blogService.setToken(user.token)
     }
   },[])
+
+  const footerStyle = {
+    color:  errorMessage.color,
+    background: "lightgrey",
+    fontSize: "20px",
+    borderStyle: "solid",
+    borderRadius: "5px",
+    padding: "10px",
+    marginBottom: "10px",
+  }
 
   const loginForm = () => {
     return (
@@ -69,6 +84,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
+      console.log('tried login',)
       const user = await loginService.login({
         username, password
       })
@@ -81,20 +97,44 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       console.log('error', exception)
+      setUsername('')
+      setPassword('')
+      setErrorMessage({
+        visible : true,
+        message : "wrong username or password",
+        color : "red"
+      })
+      setTimeout(() => setErrorMessage({
+        message : "",
+        color : "green",
+        visible : false
+      }),5000)
     }
-    console.log('Logging in',)
   }
 
   const handleClick = () => {
-    window.localStorage.removeItem('loggedNoteappUser')
+    window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     blogService.setToken(null)
   }
 
-  const handleCreateClick = async () => {
-   blogService.create(newBlog).then(
+  const handleBlogCreation = (event) => {
+    event.preventDefault()
+    console.log('posted',)
+    blogService.create(newBlog).then(
       _ => {
         console.log('New blog posted!!!',)
+        setErrorMessage({
+          message :  `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          color : "green",
+          visible : true
+        })
+
+        setTimeout(() => setErrorMessage({
+          message : "",
+          color : "green",
+          visible : false
+        }), 5000)
         const emptyBlog = {
           title: "",
           author: "",
@@ -105,19 +145,24 @@ const App = () => {
   }
 
   console.log('title locally stored ', newBlog)
+  console.log('error message', errorMessage.message)
   return (
     <>
       {user === null ?
-        loginForm() :
+        <div>
+          {errorMessage.visible && <div style={footerStyle}> {errorMessage.message}</div>}
+        {loginForm()}
+        </div>:
         <div>
           <h2>blogs</h2>
+          {errorMessage.visible && <div style={footerStyle}> {errorMessage.message}</div>}
           <p>
             {user.name} logged-in
             <button onClick={handleClick}>logout</button>
           </p>
           <div>
             <h2>create new</h2>
-            <form>
+            <form onSubmit={handleBlogCreation}>
               <div>
                 title:  
                 <input type="text"
@@ -142,7 +187,7 @@ const App = () => {
                   onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}
                 />
               </div>
-              <button onClick={handleCreateClick}>create</button>
+              <button type="submit">create</button>
             </form>
           </div>
           {blogForm()}

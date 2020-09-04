@@ -8,9 +8,9 @@ const setToken = (newToken) => {
 }
 
 const getAll = () => {
-  const data =  axios.get(baseUrl).then(
+  return axios.get(baseUrl).then(
     response =>response.data)
-  return data
+
 }
 
 
@@ -18,10 +18,9 @@ const create = (newObject) => {
   const config = {
     headers : {'authorization' : token},
   }
-  const data = axios.post(baseUrl, newObject, config).then(
+  return axios.post(baseUrl, newObject, config).then(
     response =>  response.data
   )  
-  return data
 }
 
 export default { getAll, setToken, create }
