@@ -23,4 +23,11 @@ const create = (newObject) => {
   )  
 }
 
-export default { getAll, setToken, create }
+const addLike = (blog, id) => {
+  const data = axios.put(`${baseUrl}/${id}`,blog)
+    .then(response => response.data)
+return data
+
+}
+
+export default { getAll, setToken, create, addLike }

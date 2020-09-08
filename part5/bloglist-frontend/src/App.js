@@ -51,10 +51,15 @@ const App = () => {
     return(
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} addLike={addLike} />
         )}
       </div>
     )
+  }
+
+  const addLike = (blog) => {
+    blogService.addLike({...blog, likes:blog.likes+1},blog.id)
+      .then(blogService.getAll().then(blogs => setBlogs(blogs)))
   }
 
   const handleLogin = async (event) => {
