@@ -52,7 +52,7 @@ const App = () => {
     return(
       <div>
         {blogs.sort((a, b) => (b.likes - a.likes)).map(blog =>
-          <Blog key={blog.id} blog={blog} addLike={addLike} />
+          <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} />
         )}
       </div>
     )
@@ -61,6 +61,11 @@ const App = () => {
   const addLike = (blog) => {
     blogService.addLike({...blog, likes:blog.likes+1},blog.id)
       .then(blogService.getAll().then(blogs => setBlogs(blogs)))
+  }
+
+  const removeBlog = (blog) => {
+    blogService.remove(blog.id)
+     .then(_ => blogService.getAll().then(blogs => setBlogs(blogs)))
   }
 
   const handleLogin = async (event) => {

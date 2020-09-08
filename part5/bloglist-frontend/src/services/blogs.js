@@ -30,4 +30,13 @@ return data
 
 }
 
-export default { getAll, setToken, create, addLike }
+const remove = (id) => {
+  const config = {
+    headers: { 'authorization': token },
+  }
+  return axios.delete(`${baseUrl}/${id}`,config)
+                    .then(response => response.data)
+
+}
+
+export default { getAll, setToken, create, addLike, remove }
