@@ -3,7 +3,6 @@ const Blog = ({ blog, addLike }) => {
   const [blogVisible, setBlogVisible] = useState(false) 
   const [showOrHide, setShowOrHide] = useState("show")
   
-  // const hideWhenVisible = { display: blogVisible ? 'none' : '' } 
   const showWhenVisible = { display: blogVisible ? '' : 'none' } 
   
 
@@ -26,9 +25,6 @@ const Blog = ({ blog, addLike }) => {
         <div>{blog.likes}<button onClick={() => addLike(blog)}>likes</button></div>
         <div>{blog.author}</div>
       </div>
-      {/* <div>{blog.url}</div>
-      <div>{blog.likes}</div>
-      <div>{blog.author}</div> */}
   </div>
 )}
 
