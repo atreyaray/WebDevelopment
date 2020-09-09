@@ -16,14 +16,14 @@ const LoginForm = ({
             <form onSubmit={handleLogin}>
                 <div>
                     username
-              <input type="text"
+                    <input type="text"
                         value={username}
                         name="username"
                         onChange={handleUsernameChange} />
                 </div>
                 <div>
                     password
-              <input type="password"
+                    <input type="password"
                         value={password}
                         name="Password"
                         onChange={handlePasswordChange} />
@@ -34,8 +34,8 @@ const LoginForm = ({
     )
 }
 
-LoginForm.propTypes = { 
-    handleSubmit: PropTypes.func.isRequired,
+LoginForm.propTypes = {
+    handleLogin: PropTypes.func.isRequired,
     handleUsernameChange: PropTypes.func.isRequired,
     handlePasswordChange: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
