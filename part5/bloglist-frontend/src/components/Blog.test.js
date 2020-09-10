@@ -5,15 +5,15 @@ import { prettyDOM, fireEvent } from '@testing-library/dom'
 import Blog from './Blog'
 describe('Blog ' , () => {
     let component
+    const addLike = jest.fn()
+    const removeBlog = jest.fn()
+    const blog = {
+        title: 'Sample blog',
+        author: 'Anonymous author',
+        url: 'www.google.com',
+        likes: 12
+    }
     beforeEach(() => {
-        const addLike = jest.fn()
-        const removeBlog = jest.fn()
-        const blog = {
-            title: 'Sample blog',
-            author: 'Anonymous author',
-            url: 'www.google.com',
-            likes: 12
-        }
         component = render(
             <Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />
         )
@@ -31,5 +31,12 @@ describe('Blog ' , () => {
         fireEvent.click(button)
         const additionalInfo = component.container.querySelector('.expandedView')
         expect(additionalInfo).not.toHaveStyle('display:none')
+    })
+
+    test(' if the like button is clicked twice, the event handler the component received as props is called twice', () => {
+        const likeButton = component.getByText('likes')
+        fireEvent.click(likeButton)
+        fireEvent.click(likeButton)
+        expect(addLike.mock.calls).toHaveLength(2)
     })
 })
