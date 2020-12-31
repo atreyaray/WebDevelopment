@@ -24,6 +24,7 @@ module.exports = {
             "error",
             4
         ],
+        "no-multiple-empty-lines": [2, { "max": 99999, "maxEOF": 0 }],
         "linebreak-style": 0,
         "quotes": [
             "error",
@@ -34,7 +35,7 @@ module.exports = {
             "never"
         ],
         "eqeqeq": "error",
-        "no-trailing-spaces": "error",
+        "no-trailing-spaces": ["error", { "skipBlankLines": true }],
         "object-curly-spacing": [
             "error", "always"
         ],

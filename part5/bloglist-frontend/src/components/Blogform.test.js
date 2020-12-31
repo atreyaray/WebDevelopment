@@ -41,6 +41,7 @@ describe('Blogform', () => {
         })
 
         fireEvent.submit(form)
+        expect(create.mock.calls).toHaveLength(1)
         expect(create.mock.calls[0][0].title).toBe(blog.title)
         expect(create.mock.calls[0][0].author).toBe(blog.author)
         expect(create.mock.calls[0][0].url).toBe(blog.url)

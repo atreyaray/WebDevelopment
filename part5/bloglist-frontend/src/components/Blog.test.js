@@ -4,15 +4,19 @@ import { render } from '@testing-library/react'
 import { prettyDOM, fireEvent } from '@testing-library/dom'
 import Blog from './Blog'
 describe('Blog ' , () => {
+    
     let component
+
     const addLike = jest.fn()
     const removeBlog = jest.fn()
+    
     const blog = {
         title: 'Sample blog',
         author: 'Anonymous author',
         url: 'www.google.com',
         likes: 12
     }
+    
     beforeEach(() => {
         component = render(
             <Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />

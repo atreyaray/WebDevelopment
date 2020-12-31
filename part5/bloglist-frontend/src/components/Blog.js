@@ -16,11 +16,10 @@ const Blog = ({ blog, addLike, removeBlog }) => {
     }
     return(
         <div style={blogStyle}>
-            <div>{blog.title}<button onClick={handleButtonClick}>{showOrHide}</button></div>
+            <div>{blog.title} by {blog.author}<button onClick={handleButtonClick}>{showOrHide}</button></div>
             <div style={showWhenVisible} className='expandedView'>
                 <div>{blog.url}</div>
                 <div>{blog.likes}<button onClick={() => addLike(blog)}>likes</button></div>
-                <div>{blog.author}</div>
                 <button onClick={() => removeBlog(blog)}>remove</button>
             </div>
         </div>
