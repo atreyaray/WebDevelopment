@@ -3,8 +3,10 @@ const bcrypt = require('bcrypt')
 const { request } = require('express')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
+const logger = require('../utils/logger')
 
 loginRouter.post('/', async (request, response) => {
+    console.log('router to loginrouter')
     const body = request.body
     console.log('body is',body)
     const user = await User.findOne({username: body.username})
@@ -12,6 +14,8 @@ loginRouter.post('/', async (request, response) => {
     const passwordCorrect = user === null
                         ? false
                         : await bcrypt.compare(body.password, user.passwordHash)
+    
+    console.log('password correct', passwordCorrect)
     
     if(!(user && passwordCorrect)) {
         return response
