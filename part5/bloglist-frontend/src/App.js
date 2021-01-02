@@ -119,6 +119,7 @@ const App = () => {
     console.log('error message', errorMessage.message)
     return (
         <>
+            <h2>Blogs</h2>
             {user === null ?
                 <div>
                     {errorMessage.visible && <div style={footerStyle}> {errorMessage.message}</div>}
@@ -133,7 +134,6 @@ const App = () => {
                     </Togglable>
                 </div>:
                 <div>
-                    <h2>blogs</h2>
                     {errorMessage.visible && <div style={footerStyle}> {errorMessage.message}</div>}
                     <p>
                         {user.name} logged-in
@@ -144,9 +144,9 @@ const App = () => {
                             create={create}
                         />
                     </Togglable>
-                    {blogForm()}
                 </div>
             }
+            {blogForm()}
         </>
     )
 }
