@@ -122,7 +122,7 @@ const App = () => {
             <h2>Blogs</h2>
             {user === null ?
                 <div>
-                    {errorMessage.visible && <div style={footerStyle}> {errorMessage.message}</div>}
+                    {errorMessage.visible && <div style={footerStyle} className="error"> {errorMessage.message}</div>}
                     <Togglable buttonLabel='login' ref={ref2}>
                         <LoginForm
                             handleLogin={handleLogin}
