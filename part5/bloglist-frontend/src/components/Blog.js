@@ -15,7 +15,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
         blogVisible ? setShowOrHide('show') : setShowOrHide('hide')
     }
     return(
-        <div style={blogStyle}>
+        <div style={blogStyle} className="blog">
             <div>{blog.title} by {blog.author}<button onClick={handleButtonClick}>{showOrHide}</button></div>
             <div style={showWhenVisible} className='expandedView'>
                 <div>{blog.url}</div>
