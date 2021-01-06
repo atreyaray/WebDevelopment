@@ -28,7 +28,9 @@ const reducer = (state = initialState, action) => {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-      return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+      const changedState = state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+      const sortedChangedState = changedState.sort((a,b) => b.votes - a.votes )
+      return sortedChangedState
     }
     case 'NEW_NOTE': {
       const newNote = {
