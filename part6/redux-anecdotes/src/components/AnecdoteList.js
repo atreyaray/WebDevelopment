@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { vote_increment } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(state => state.anecdotes)
     const dispatch = useDispatch()
 
     const vote = (id) => {
@@ -30,16 +30,3 @@ const AnecdoteList = () => {
 }
 
 export default AnecdoteList
-// {
-//     anecdotes.map(anecdote =>
-//         <div key={anecdote.id}>
-//             <div>
-//                 {anecdote.content}
-//             </div>
-//             <div>
-//                 has {anecdote.votes}
-//                 <button onClick={() => vote(anecdote.id)}>vote</button>
-//             </div>
-//         </div>
-//     )
-// }
