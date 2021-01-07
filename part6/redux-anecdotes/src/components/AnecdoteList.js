@@ -5,7 +5,6 @@ import { vote_increment } from '../reducers/anecdoteReducer'
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => { 
        const ans = state.filter !== '' ?  state.anecdotes.filter(anec => anec.content.includes(state.filter)) :  state.anecdotes
-       console.log('length of anecdots is ', ans.length)
         return ans
     })
 

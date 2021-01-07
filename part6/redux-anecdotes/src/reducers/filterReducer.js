@@ -1,7 +1,6 @@
 const filterAtStart = ''
 
 export const changeFilter = (newFilter) => {
-    console.log('filter changed')
      return{
          type: 'CHANGE_FILTER',
          data:{
