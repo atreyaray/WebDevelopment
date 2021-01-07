@@ -7,18 +7,6 @@
 // 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 // ]
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-// const asObject = (anecdote) => {
-//   return {
-//     content: anecdote,
-//     id: getId(),
-//     votes: 0
-//   }
-// }
-
-// const initialState = anecdotesAtStart.map(asObject)
-
 const reducer = (state = [], action) => {
   switch (action.type){
     case 'VOTE_INCREMENT': {
@@ -33,12 +21,7 @@ const reducer = (state = [], action) => {
       return sortedChangedState
     }
     case 'NEW_NOTE': {
-      const newNote = {
-        id: getId(),
-        content: action.data.content,
-        votes: 0
-      }
-      return state.concat(newNote)
+      return state.concat(action.data)
     }
     case 'INIT_ANECDOTES': {
       return action.data
@@ -55,12 +38,10 @@ export const vote_increment = (id) => {
   }
 }
 
-export const new_note = (content) => {
+export const new_note = (newNote) => {
   return {
     type: 'NEW_NOTE',
-    data: {
-      content
-    }
+    data: newNote
   }
 } 
 
