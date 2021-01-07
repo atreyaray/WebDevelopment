@@ -39,12 +39,15 @@ export const vote_increment = (id) => {
   }
 }
 
-export const new_note = (newNote) => {
-  return {
-    type: 'NEW_NOTE',
-    data: newNote
+export const new_note = (content) => {
+  return async dispatch => {
+    const note = await noteService.createNew(content)
+    dispatch({
+      type: 'NEW_NOTE',
+      data: note
+    })
   }
-} 
+}
 
 export const initAnecdotes = () => {
  return async dispatch =>{
