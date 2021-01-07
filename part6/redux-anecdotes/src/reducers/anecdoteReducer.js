@@ -1,12 +1,4 @@
-// const anecdotesAtStart = [
-// 'If it hurts, do it more often',
-// 'Adding manpower to a late software project makes it later!',
-// 'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-// 'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-// 'Premature optimization is the root of all evil.',
-// 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-// ]
-import noteService from '../services/notes'
+import anecdoteService from '../services/anecdotes'
 
 const reducer = (state = [], action) => {
   switch (action.type){
@@ -29,7 +21,7 @@ const reducer = (state = [], action) => {
 
 export const vote_increment = (id) => {
   return async dispatch => {
-    const response = await noteService.updateLikes(id)
+    const response = await anecdoteService.updateLikes(id)
     dispatch ({
       type: 'VOTE_INCREMENT',
       data: response
@@ -39,7 +31,7 @@ export const vote_increment = (id) => {
 
 export const new_note = (content) => {
   return async dispatch => {
-    const note = await noteService.createNew(content)
+    const note = await anecdoteService.createNew(content)
     dispatch({
       type: 'NEW_NOTE',
       data: note
@@ -49,7 +41,7 @@ export const new_note = (content) => {
 
 export const initAnecdotes = () => {
  return async dispatch =>{
-   const data = await noteService.getAll()
+   const data = await anecdoteService.getAll()
    const sortedData = data.sort((a, b) => b.votes - a.votes)
    dispatch ({
      type: 'INIT_ANECDOTES',

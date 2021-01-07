@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { vote_increment } from '../reducers/anecdoteReducer'
+import { addNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => { 
@@ -12,6 +13,9 @@ const AnecdoteList = () => {
 
     const vote = (id) => {
         dispatch(vote_increment(id))
+        const likedAnecdote = anecdotes.find(n => n.id === id)
+        const content = likedAnecdote.content
+        dispatch(addNotification(`Liked: ${content}`, 3))
     }
 
     return (
