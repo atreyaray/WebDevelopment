@@ -11,13 +11,8 @@ import noteService from '../services/notes'
 const reducer = (state = [], action) => {
   switch (action.type){
     case 'VOTE_INCREMENT': {
-      const id = action.data.id
-      const anecdoteToChange = state.find(n => n.id === id)
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: anecdoteToChange.votes + 1
-      }
-      const changedState = state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+      const changedAnecdote = action.data
+      const changedState = state.map(anecdote => anecdote.id === changedAnecdote.id ? changedAnecdote : anecdote)
       const sortedChangedState = changedState.sort((a,b) => b.votes - a.votes )
       return sortedChangedState
     }
@@ -33,11 +28,14 @@ const reducer = (state = [], action) => {
 }
 
 export const vote_increment = (id) => {
-  return{
-    type: 'VOTE_INCREMENT',
-    data: { id }
+  return async dispatch => {
+    const response = await noteService.updateLikes(id)
+    dispatch ({
+      type: 'VOTE_INCREMENT',
+      data: response
+    })
   }
-}
+} 
 
 export const new_note = (content) => {
   return async dispatch => {
@@ -52,9 +50,10 @@ export const new_note = (content) => {
 export const initAnecdotes = () => {
  return async dispatch =>{
    const data = await noteService.getAll()
+   const sortedData = data.sort((a, b) => b.votes - a.votes)
    dispatch ({
      type: 'INIT_ANECDOTES',
-     data
+     data: sortedData
    }) 
  }
 }
