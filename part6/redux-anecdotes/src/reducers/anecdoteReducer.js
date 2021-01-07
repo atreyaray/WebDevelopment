@@ -6,6 +6,7 @@
 // 'Premature optimization is the root of all evil.',
 // 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 // ]
+import noteService from '../services/notes'
 
 const reducer = (state = [], action) => {
   switch (action.type){
@@ -45,11 +46,14 @@ export const new_note = (newNote) => {
   }
 } 
 
-export const initAnecdotes = (data) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data
-  }
+export const initAnecdotes = () => {
+ return async dispatch =>{
+   const data = await noteService.getAll()
+   dispatch ({
+     type: 'INIT_ANECDOTES',
+     data
+   }) 
+ }
 }
 
 export default reducer
