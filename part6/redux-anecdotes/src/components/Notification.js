@@ -9,11 +9,11 @@ const Notification = () => {
     border: 'solid',
     padding: 10,
     borderWidth: 1, 
-    display: store.getState().notification === '' ? 'none' : '' 
+    display: store.getState().notification[0] === '' ? 'none' : '' 
   }
   return (
     <div style={style}>
-      { notification }
+      { notification[0] }
     </div>
   )
 }
